@@ -1,0 +1,17 @@
+Step 1: Start the program.
+Step 2: Define the node structure with data, left and right pointers, and thread flags.
+Step 3: Create an empty threaded BST.
+Step 4: Insert the elements into the tree while maintaining the threads.
+Step 5: Display the inorder traversal of the original tree.
+Step 6: Accept the value of the leaf node to be deleted.
+Step 7: Search for the specified node in the tree.
+Step 8: Check whether the node is a leaf node.
+Step 9: If the node is a leaf:
+- Identify its inorder predecessor and successor.
+- Update the predecessor's right thread if necessary.
+- Update the successor's left thread if necessary.
+- Update the parent's child pointer or the root pointer.
+- Delete the leaf node from memory.
+Step 10: If the node is not found or is not a leaf node, display an appropriate message.
+Step 11: Display the inorder traversal of the updated tree.
+Step 12: Stop the program.
