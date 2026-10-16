@@ -1,0 +1,1 @@
+Write a C++ program to delete a leaf node from a Threaded Binary Search Tree (TBST). The program should identify the leaf node, delete it, and correctly update the affected threads and child pointers to maintain the properties of the threaded binary search tree
