@@ -1,0 +1,201 @@
+
+#include <iostream>
+using namespace std;
+
+struct Node
+{
+    int data;
+    Node *left, *right;
+    bool lthread, rthread;
+};
+
+Node* createNode(int value)
+{
+    Node* temp = new Node;
+    temp->data = value;
+    temp->left = NULL;
+    temp->right = NULL;
+    temp->lthread = true;
+    temp->rthread = true;
+    return temp;
+}
+
+Node* insert(Node* root, int key)
+{
+    Node* ptr = root;
+    Node* parent = NULL;
+
+    while (ptr != NULL)
+    {
+        if (key == ptr->data)
+            return root;
+
+        parent = ptr;
+
+        if (key < ptr->data)
+        {
+            if (!ptr->lthread)
+                ptr = ptr->left;
+            else
+                break;
+        }
+        else
+        {
+            if (!ptr->rthread)
+                ptr = ptr->right;
+            else
+                break;
+        }
+    }
+
+    Node* temp = createNode(key);
+
+    if (parent == NULL)
+        root = temp;
+    else if (key < parent->data)
+    {
+        temp->left = parent->left;
+        temp->right = parent;
+        parent->left = temp;
+        parent->lthread = false;
+    }
+    else
+    {
+        temp->left = parent;
+        temp->right = parent->right;
+        parent->right = temp;
+        parent->rthread = false;
+    }
+
+    return root;
+}
+
+Node* inorderSuccessor(Node* ptr)
+{
+    if (ptr->rthread)
+        return ptr->right;
+
+    ptr = ptr->right;
+
+    while (ptr != NULL && !ptr->lthread)
+        ptr = ptr->left;
+
+    return ptr;
+}
+
+void inorder(Node* root)
+{
+    if (root == NULL)
+    {
+        cout << "Tree is empty." << endl;
+        return;
+    }
+
+    Node* ptr = root;
+
+    while (!ptr->lthread)
+        ptr = ptr->left;
+
+    while (ptr != NULL)
+    {
+        cout << ptr->data << " ";
+        ptr = inorderSuccessor(ptr);
+    }
+
+    cout << endl;
+}
+
+Node* deleteLeaf(Node* root, int key)
+{
+    Node* ptr = root;
+    Node* parent = NULL;
+
+    while (ptr != NULL && ptr->data != key)
+    {
+        parent = ptr;
+
+        if (key < ptr->data)
+        {
+            if (ptr->lthread)
+                break;
+            ptr = ptr->left;
+        }
+        else
+        {
+            if (ptr->rthread)
+                break;
+            ptr = ptr->right;
+        }
+    }
+
+    if (ptr == NULL || ptr->data != key)
+    {
+        cout << "Node not found." << endl;
+        return root;
+    }
+
+    if (!ptr->lthread || !ptr->rthread)
+    {
+        cout << "Node is not a leaf node." << endl;
+        return root;
+    }
+
+    if (parent == NULL)
+    {
+        delete ptr;
+        cout << "Leaf node deleted successfully." << endl;
+        return NULL;
+    }
+
+    if (parent->left == ptr)
+    {
+        parent->left = ptr->left;
+        parent->lthread = true;
+    }
+    else
+    {
+        parent->right = ptr->right;
+        parent->rthread = true;
+    }
+
+    delete ptr;
+    cout << "Leaf node deleted successfully." << endl;
+
+    return root;
+}
+
+int main()
+{
+    Node* root = NULL;
+    int n, value, key;
+
+    cout << "Enter number of nodes: ";
+    cin >> n;
+
+    if (n <= 0)
+    {
+        cout << "Invalid number of nodes." << endl;
+        return 0;
+    }
+
+    cout << "Enter node values: ";
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> value;
+        root = insert(root, value);
+    }
+
+    cout << "\nInorder before deletion: ";
+    inorder(root);
+
+    cout << "Enter leaf node to delete: ";
+    cin >> key;
+
+    root = deleteLeaf(root, key);
+
+    cout << "Inorder after deletion: ";
+    inorder(root);
+
+    return 0;
+}
