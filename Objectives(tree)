@@ -1,0 +1,6 @@
+To understand the concept of a Threaded Binary Search Tree.
+To create a Threaded BST using dynamic memory allocation.
+To search for and delete a specified leaf node.
+To update the predecessor and successor threads after deletion.
+To display the inorder traversal of the tree before and after deletion.
+To maintain the correct structure and threading of the tree.
